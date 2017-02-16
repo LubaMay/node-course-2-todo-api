@@ -59,7 +59,7 @@
         if(!todo){
             return res.status(404).send();
         }
-         res.status(200).send(todo);
+         res.send({todo});
      }).catch((err) => {
         res.status(400).send(err);
      });
