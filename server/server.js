@@ -78,8 +78,8 @@
          res.status(404).send();
      }
 
-     if (_.isBoolean(body.completed) && body.completed){
-        body.completedAt = new Date().getTime();
+     if (_.isBoolean(body.completed) && body.completed) {
+         body.completedAt = new Date().getTime();
      } else {
          body.completed = false;
          body.completedAt = null;

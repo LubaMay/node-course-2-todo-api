@@ -13,7 +13,7 @@
             default: false
         },
         completedAt: {
-            type: Date,
+            type: Number,
             default: null
         }
     });
