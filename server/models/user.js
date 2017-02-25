@@ -4,6 +4,8 @@
     const _ = require('lodash');
     const bcrypt = require('bcryptjs');
 
+    // USER MODEL ----------------------------------------------------------------//
+
     var UserSchema = new mongoose.Schema({
         email: {
             type: String,
@@ -33,6 +35,8 @@
         }]
     });
 
+    // INSTANCE METHODS ------------------------------------------------------------//
+
     UserSchema.methods.toJSON = function () {
       var user = this;
       var userObject = user.toObject();
@@ -43,7 +47,7 @@
     UserSchema.methods.generateAuthToken = function () {
       var user = this;
       var access = 'auth';
-      var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
+      var token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET).toString();
 
       user.tokens.push({access, token});
 
@@ -64,12 +68,15 @@
       });
     };
 
+
+    // STATIC METHODS ----------------------------------------------------------------//
+
     UserSchema.statics.findByToken = function (token) {
         var User = this;
         var decoded;
 
         try {
-          decoded = jwt.verify(token, 'abc123');
+          decoded = jwt.verify(token, process.env.JWT_SECRET);
         } catch (err) {
           return Promise.reject();
         }
@@ -102,6 +109,9 @@
             });
         });
     };
+
+
+    // SERIAL MIDDLEWEAR --------------------------------------------------------------//
 
     UserSchema.pre('save', function (next) {
         var user = this;
